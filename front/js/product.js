@@ -26,7 +26,7 @@ const selectedQuantity = document.querySelector("#quantity");
 // Sélection du bouton Ajouter au panier
 const button = document.querySelector("#addToCart");
 
-// Fonction qui récupère les données de la promesse .then(product) pour injecter les valeurs dans le fichier Html
+// Fonction qui récupère les données de la promesse .then(product) pour injecter les valeurs dans le fichier HTML
 let selectedProduct = (product) => {
   // Intégration des données du produit sélectionné dans la page HTML
   document.querySelector("head > title").textContent = product.name;
