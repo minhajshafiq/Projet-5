@@ -1,10 +1,10 @@
 // Récupération du localStorage
 let cart = JSON.parse(localStorage.getItem("cart"));
 
-// Variable pour stocker les Id de chaque articles présent dans le panier (utilisés pour créer la commande)
+// Variable pour stocker les ID de chaque articles présent dans le panier
 let products = [];
 
-// Variable qui récupère l'orderId envoyé comme réponse par le serveur lors de la requête POST
+// Variable qui récupère l'orderID envoyé comme réponse par le serveur lors de la requête POST
 let orderId = "";
 
 // Affichage du contenu du panier
@@ -20,7 +20,7 @@ async function displayCart() {
     console.log("Des produits sont présents dans le panier");
   }
   
-  // Si le localstorage contient des produits
+  // Si le localstorage contient des produits afficher le panier avec le produit
   for (i = 0; i < cart.length; i++) {
     const product = await getProductById(cart[i].id);
     const totalPriceItem = (product.price *= cart[i].quantity);
@@ -77,7 +77,6 @@ async function getProductById(productId) {
       return res.json();
     })
     .catch((err) => {
-      // Erreur serveur
       console.log("erreur");
     })
     .then(function (response) {
@@ -86,7 +85,7 @@ async function getProductById(productId) {
 }
 displayCart();
 
-// Modification de la quantité
+// Modification de la quantité de produit dans le panier
 function changeQuantity() {
   const quantityInputs = document.querySelectorAll(".itemQuantity");
   quantityInputs.forEach((quantityInput) => {
@@ -107,7 +106,7 @@ function changeQuantity() {
       // Mise à jour du localStorage
       let itemsStr = JSON.stringify(items);
       localStorage.setItem("cart", itemsStr);
-      // Refresh de la page Panier
+      // Rechargement de la page Panier
       location.reload();
     });
   });
@@ -127,19 +126,19 @@ function deleteItem() {
       console.log(cart);
       // Mise à jour du localStorage
       localStorage.setItem("cart", JSON.stringify(cart));
-      // Refresh de la page Panier
+      // Rechargement de la page Panier
       location.reload();
       alert("Article supprimé du panier.");
     });
   });
 }
 
-/* LE FORMULAIRE */
+// Le formulaire de coordonnées
 
-// sélection du bouton Valider
+// Sélection du bouton Valider
 const btnValidate = document.querySelector("#order");
 
-// Écoute du bouton Valider sur le click pour pouvoir valider le formulaire
+// Vérification du bouton Valider sur le click pour pouvoir valider le formulaire
 btnValidate.addEventListener("click", (event) => {
   event.preventDefault();
 
@@ -153,26 +152,26 @@ btnValidate.addEventListener("click", (event) => {
 
   console.log(contact);
 
-  /* GESTION DU FORMULAIRE */
+  // Gestionnaire du formulaire 
 
-  // Regex pour le contrôle des champs Prénom, Nom et Ville
+  // Contrôle des champs "Nom", "Prénom" et "Ville"
   const regExPrenomNomVille = (value) => {
     return /^[A-Z][A-Za-z\é\è\ê\-]+$/.test(value);
   };
 
-  // Regex pour le contrôle du champ Adresse
+  // Contrôle du champ "Adresse"
   const regExAdresse = (value) => {
     return /^[a-zA-Z0-9.,-_ ]{5,50}[ ]{0,2}$/.test(value);
   };
 
-  // Regex pour le contrôle du champ Email
+  // Contrôle du champ "Email"
   const regExEmail = (value) => {
     return /^[_a-z0-9-]+(.[_a-z0-9-]+)*@[a-z0-9-]+(.[a-z0-9-]+)*(.[a-z]{2,4})$/.test(
       value
     );
   };
 
-  // Fonctions de contrôle du champ Prénom:
+  // Vérification du champ "Prénom" :
   function firstNameControl() {
     const prenom = contact.firstName;
     let inputFirstName = document.querySelector("#firstName");
@@ -185,12 +184,12 @@ btnValidate.addEventListener("click", (event) => {
       inputFirstName.style.backgroundColor = "#FF6F61";
 
       document.querySelector("#firstNameErrorMsg").textContent =
-        "Champ Prénom de formulaire invalide, ex: Paul";
+        "Veuillez saisir un prénom valide avec une majuscule, ex: Vincent";
       return false;
     }
   }
 
-  // Fonctions de contrôle du champ Nom:
+  // Vérification du champ "Nom" :
   function lastNameControl() {
     const nom = contact.lastName;
     let inputLastName = document.querySelector("#lastName");
@@ -203,12 +202,12 @@ btnValidate.addEventListener("click", (event) => {
       inputLastName.style.backgroundColor = "#FF6F61";
 
       document.querySelector("#lastNameErrorMsg").textContent =
-        "Champ Nom de formulaire invalide, ex: Durand";
+        "Veuille saisir un nom valide avec une majuscule, ex: Fontaine";
       return false;
     }
   }
 
-  // Fonctions de contrôle du champ Adresse:
+  // Vérification du champ "Adresse" :
   function addressControl() {
     const adresse = contact.address;
     let inputAddress = document.querySelector("#address");
@@ -221,12 +220,12 @@ btnValidate.addEventListener("click", (event) => {
       inputAddress.style.backgroundColor = "#FF6F61";
 
       document.querySelector("#addressErrorMsg").textContent =
-        "Champ Adresse de formulaire invalide, ex: 50 rue de la paix";
+        "Veuillez saisir une adresse valide , ex: 4 Avenue Anatole France";
       return false;
     }
   }
 
-  // Fonctions de contrôle du champ Ville:
+  // Vérification du champ "Ville" :
   function cityControl() {
     const ville = contact.city;
     let inputCity = document.querySelector("#city");
@@ -239,12 +238,12 @@ btnValidate.addEventListener("click", (event) => {
       inputCity.style.backgroundColor = "#FF6F61";
 
       document.querySelector("#cityErrorMsg").textContent =
-        "Champ Ville de formulaire invalide, ex: Paris";
+        "Veuillez saisir un nom de ville valide avec une majuscule, ex: Paris";
       return false;
     }
   }
 
-  // Fonctions de contrôle du champ Email:
+  // Vérification du champ "Email" :
   function mailControl() {
     const courriel = contact.email;
     let inputMail = document.querySelector("#email");
@@ -257,12 +256,12 @@ btnValidate.addEventListener("click", (event) => {
       inputMail.style.backgroundColor = "#FF6F61";
 
       document.querySelector("#emailErrorMsg").textContent =
-        "Champ Email de formulaire invalide, ex: example@contact.fr";
+        "Veuillez saisir un email valide, ex: example@contact.fr";
       return false;
     }
   }
 
-  // Contrôle validité formulaire avant de l'envoyer dans le local storage
+  // Vérification de la validité du formulaire avant de l'envoyer dans le local storage
   if (
     firstNameControl() &&
     lastNameControl() &&
@@ -270,19 +269,17 @@ btnValidate.addEventListener("click", (event) => {
     cityControl() &&
     mailControl()
   ) {
-    // Enregistrer le formulaire dans le local storage
+    // Enregistrement du formulaire dans le local storage
     localStorage.setItem("contact", JSON.stringify(contact));
 
     document.querySelector("#order").value =
-      "Articles et formulaire valide\n Passer commande !";
+      "Passer commande !";
     sendToServer();
   } else {
     error("Veuillez bien remplir le formulaire");
   }
 
-  /* FIN GESTION DU FORMULAIRE */
-
-  /* REQUÊTE DU SERVEUR ET POST DES DONNÉES */
+  // Requête du server et POST des donnés
   function sendToServer() {
     const sendToServer = fetch("http://localhost:3000/api/products/order", {
       method: "POST",
@@ -291,7 +288,7 @@ btnValidate.addEventListener("click", (event) => {
         "Content-Type": "application/json",
       },
     })
-      // Récupération et stockage de la réponse de l'API (orderId)
+      // Récupération et stockage de la réponse de l'API pour l'orderID
       .then((response) => {
         return response.json();
       })
@@ -300,14 +297,12 @@ btnValidate.addEventListener("click", (event) => {
         console.log(orderId);
       });
 
-    // Si l'orderId a bien été récupéré, on redirige l'utilisateur vers la page de Confirmation
+    // Si l'orderID a bien été récupéré, on redirige l'utilisateur vers la page de Confirmation
     if (orderId != "") {
       location.href = "confirmation.html?id=" + orderId;
     }
   }
 });
-
-/* FIN REQUÊTE DU SERVEUR ET POST DES DONNÉES */
 
 // Maintenir le contenu du localStorage dans le champs du formulaire
 

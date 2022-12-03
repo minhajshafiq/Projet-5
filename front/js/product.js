@@ -47,16 +47,16 @@ let selectedProduct = (product) => {
 
 // Fonction qui enregistre dans un objet les options de l'utilisateur au click sur le bouton ajouter au panier
 let registredProduct = (product) => {
-  // Écoute de l'évènement click sur le bouton ajouter
+  // Vérification du click sur le bouton ajouter
   button.addEventListener("click", (event) => {
     event.preventDefault();
 
     if (selectedColor.value == false) {
-      confirm("Veuillez sélectionner une couleur");
+      confirm("Veuillez sélectionner une couleur !");
     } else if (selectedQuantity.value == 0) {
-      confirm("Veuillez sélectionner le nombre d'articles souhaités");
+      confirm("Veuillez sélectionner le nombre d'articles souhaités !");
     } else {
-      alert("Votre article a bien été ajouté au panier");
+      alert("Votre article a bien été ajouté au panier !");
 
       // Récupération des informations du produit sélectionné
       let selectedProduct = {
@@ -70,7 +70,7 @@ let registredProduct = (product) => {
       };
       console.log(selectedProduct);
 
-      /**** Gestion du localStorage ****/
+      // Gestion du localStorage
 
       // Récupération des données du localStorage
       let existingCart = JSON.parse(localStorage.getItem("cart"));
@@ -78,17 +78,17 @@ let registredProduct = (product) => {
       // Si le localStorage existe
       if (existingCart) {
         console.log("Il y a déjà un produit dans le panier, on compare les données");
-        // On recherche avec la méthode find() si l'id et la couleur d'un article sont déjà présents
+        // On recherche avec la méthode find() si l'ID et la couleur d'un article sont déjà présents
         let item = existingCart.find(
           (item) =>
             item.id == selectedProduct.id && item.color == selectedProduct.color
         );
-        // Si oui, on incrémente la nouvelle quantité et la mise à jour du prix total de l'article
+        // Si oui, on ajoute la nouvelle quantité et la mise à jour du prix total de l'article
         if (item) {
           item.quantity = item.quantity + selectedProduct.quantity;
           item.totalPrice += item.price * selectedProduct.quantity;
           localStorage.setItem("cart", JSON.stringify(existingCart));
-          console.log("Quantité supplémentaire dans le panier.");
+          console.log("Quantité supplémentaire dans le panier");
           return;
         }
         // Si non, alors on push le nouvel article sélectionné
