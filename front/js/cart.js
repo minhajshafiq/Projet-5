@@ -1,3 +1,5 @@
+// Page Panier 
+
 // Récupération du localStorage
 let cart = JSON.parse(localStorage.getItem("cart"));
 
@@ -23,7 +25,6 @@ async function displayCart() {
   // Si le localstorage contient des produits afficher le panier avec le produit
   for (i = 0; i < cart.length; i++) {
     const product = await getProductById(cart[i].id);
-    const totalPriceItem = (product.price *= cart[i].quantity);
     cartArray += `<article class="cart__item" data-id="${cart[i].id}" data-color="${cart[i].color}">
                   <div class="cart__item__img">
                       <img src="${product.imageUrl}" alt="${product.altTxt}">
@@ -39,7 +40,6 @@ async function displayCart() {
                             <p id="quantité">
                               Qté : <input data-id= ${cart[i].id} data-color= ${cart[i].color} type="number" class="itemQuantity" name="itemQuantity" min="1" max="100" value=${cart[i].quantity}>
                             </p>
-                            <p id="sousTotal">Prix total pour cet article: ${totalPriceItem}€</p> 
                         </div>
                         <div class="cart__item__content__settings__delete">
                           <p data-id= ${cart[i].id} data-color= ${cart[i].color} class="deleteItem">Supprimer</p>
@@ -49,7 +49,7 @@ async function displayCart() {
                   </div>
                   </article>`;
   }
-  // Boucle d'affichage du nombre total d'articles dans le panier et de la somme totale
+  // Affichage du nombre total d'articles dans le panier et de la somme totale
   let totalQuantity = 0;
   let totalPrice = 0;
 
@@ -176,7 +176,7 @@ btnValidate.addEventListener("click", (event) => {
     const prenom = contact.firstName;
     let inputFirstName = document.querySelector("#firstName");
     if (regExPrenomNomVille(prenom)) {
-      inputFirstName.style.backgroundColor = "green";
+      inputFirstName.style.backgroundColor = "#B4FFB8";
 
       document.querySelector("#firstNameErrorMsg").textContent = "";
       return true;
@@ -194,7 +194,7 @@ btnValidate.addEventListener("click", (event) => {
     const nom = contact.lastName;
     let inputLastName = document.querySelector("#lastName");
     if (regExPrenomNomVille(nom)) {
-      inputLastName.style.backgroundColor = "green";
+      inputLastName.style.backgroundColor = "#B4FFB8";
 
       document.querySelector("#lastNameErrorMsg").textContent = "";
       return true;
@@ -212,7 +212,7 @@ btnValidate.addEventListener("click", (event) => {
     const adresse = contact.address;
     let inputAddress = document.querySelector("#address");
     if (regExAdresse(adresse)) {
-      inputAddress.style.backgroundColor = "green";
+      inputAddress.style.backgroundColor = "#B4FFB8";
 
       document.querySelector("#addressErrorMsg").textContent = "";
       return true;
@@ -230,7 +230,7 @@ btnValidate.addEventListener("click", (event) => {
     const ville = contact.city;
     let inputCity = document.querySelector("#city");
     if (regExPrenomNomVille(ville)) {
-      inputCity.style.backgroundColor = "green";
+      inputCity.style.backgroundColor = "#B4FFB8";
 
       document.querySelector("#cityErrorMsg").textContent = "";
       return true;
@@ -248,7 +248,7 @@ btnValidate.addEventListener("click", (event) => {
     const courriel = contact.email;
     let inputMail = document.querySelector("#email");
     if (regExEmail(courriel)) {
-      inputMail.style.backgroundColor = "green";
+      inputMail.style.backgroundColor = "#B4FFB8";
 
       document.querySelector("#emailErrorMsg").textContent = "";
       return true;
@@ -272,11 +272,10 @@ btnValidate.addEventListener("click", (event) => {
     // Enregistrement du formulaire dans le local storage
     localStorage.setItem("contact", JSON.stringify(contact));
 
-    document.querySelector("#order").value =
-      "Passer commande !";
+    document.querySelector("#order").value = "Confirmez votre commande !";
     sendToServer();
   } else {
-    error("Veuillez bien remplir le formulaire");
+    error("Veuillez bien remplir le formulaire !");
   }
 
   // Requête du server et POST des donnés

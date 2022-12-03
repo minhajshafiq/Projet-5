@@ -1,4 +1,4 @@
-// Page de présentation
+// Page Acceuil
  
 /**
  * Récupérer tous les articles du site pour pouvoir les afficher par la suite

@@ -1,4 +1,6 @@
-// Récupération de l'ID du produit
+// Page Produit 
+
+// Récupération de l'ID du produit pour changer l'URL
 const getProductId = () => {
   return new URL(location.href).searchParams.get("id");
 };
