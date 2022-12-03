@@ -1,5 +1,7 @@
+// Page de présentation
+ 
 /**
- * Récuperer tous les articles du site pour pouvoir les afficher par la suite
+ * Récupérer tous les articles du site pour pouvoir les afficher par la suite
  * @param { String } url
  * @return { Promise }
  **/
@@ -41,28 +43,28 @@
  function addItemAtHome(idItem, imageUrl, imageAlt, name, description) {
    var items = document.getElementById("items");
  
-   //   création du liens de l'article
+   //   Création du lien de l'article
    let linkItem = document.createElement("a");
    linkItem.href = "./product.html?id=" + idItem;
    items.append(linkItem);
  
-   //   création de l'article
+   //   Création de l'article
    let articleItem = document.createElement("article");
    linkItem.append(articleItem);
  
-   //   création de l'image de l'article
+   //   Création de l'image de l'article
    let pictureItem = document.createElement("img");
    pictureItem.src = imageUrl;
    pictureItem.alt = imageAlt;
    articleItem.append(pictureItem);
  
-   //   création du titre de l'article
+   //   Création du titre de l'article
    let titleItem = document.createElement("h3");
    titleItem.textContent = name;
    titleItem.classList.add("productName");
    articleItem.append(titleItem);
  
-   //   création de la description de l'article
+   //   Création de la description de l'article
    let descriptionItem = document.createElement("p");
    descriptionItem.textContent = description;
    descriptionItem.classList.add("productDescription");
