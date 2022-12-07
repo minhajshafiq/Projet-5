@@ -16,10 +16,9 @@ async function displayCart() {
   let cartArray = [];
 
   // Si le localstorage est vide
-  if (cart === null || cart === 0) {
+  if (cart === null || cart.length === 0) {
     positionEmptyCart.textContent = "Votre panier est vide";
   } else {
-    console.log("Des produits sont présents dans le panier");
   }
   
   // Si le localstorage contient des produits afficher le panier avec le produit
@@ -50,17 +49,8 @@ async function displayCart() {
                   </article>`;
   }
   // Affichage du nombre total d'articles dans le panier et de la somme totale
-  let totalQuantity = 0;
-  let totalPrice = 0;
-
-  for (i = 0; i < cart.length; i++) {
-    const article = await getProductById(cart[i].id);
-    totalQuantity += parseInt(cart[i].quantity);
-    totalPrice += parseInt(article.price * cart[i].quantity);
-  }
-
-  document.getElementById("totalQuantity").innerHTML = totalQuantity;
-  document.getElementById("totalPrice").innerHTML = totalPrice;
+  await computePrice(cart);
+  await computeQuantity(cart);
 
   if (i == cart.length) {
     const displayBasket = parser.parseFromString(cartArray, "text/html");
@@ -70,6 +60,25 @@ async function displayCart() {
   }
 }
 
+async function computePrice (cart) {
+  let totalPrice = 0;
+    for (i = 0; i < cart.length; i++) {
+      const article = await getProductById(cart[i].id);
+      totalPrice += parseInt(article.price * cart[i].quantity);
+    }
+    document.getElementById("totalPrice").innerHTML = totalPrice;
+}
+
+async function computeQuantity (cart) {
+  let totalQuantity = 0; 
+    for (i = 0; i < cart.length; i++) {
+      const article = await getProductById(cart[i].id);
+      totalQuantity += parseInt(cart[i].quantity);
+    }
+    document.getElementById("totalQuantity").innerHTML = totalQuantity;
+}
+
+
 // Récupération des produits de l'API
 async function getProductById(productId) {
   return fetch("http://localhost:3000/api/products/" + productId)
@@ -77,7 +86,6 @@ async function getProductById(productId) {
       return res.json();
     })
     .catch((err) => {
-      console.log("erreur");
     })
     .then(function (response) {
       return response;
@@ -89,7 +97,7 @@ displayCart();
 function changeQuantity() {
   const quantityInputs = document.querySelectorAll(".itemQuantity");
   quantityInputs.forEach((quantityInput) => {
-    quantityInput.addEventListener("change", (event) => {
+    quantityInput.addEventListener("change", async(event) => {
       event.preventDefault();
       const inputValue = event.target.value;
       const dataId = event.target.getAttribute("data-id");
@@ -106,8 +114,9 @@ function changeQuantity() {
       // Mise à jour du localStorage
       let itemsStr = JSON.stringify(items);
       localStorage.setItem("cart", itemsStr);
-      // Rechargement de la page Panier
-      location.reload();
+      // Rechargement du prix et de la quantité de produit 
+      await computePrice(items);
+      await computeQuantity(items);
     });
   });
 }
@@ -116,19 +125,19 @@ function changeQuantity() {
 function deleteItem() {
   const deleteButtons = document.querySelectorAll(".deleteItem");
   deleteButtons.forEach((deleteButton) => {
-    deleteButton.addEventListener("click", (event) => {
+    deleteButton.addEventListener("click", async(event) => {
       event.preventDefault();
       const deleteId = event.target.getAttribute("data-id");
       const deleteColor = event.target.getAttribute("data-color");
       cart = cart.filter(
         (element) => !(element.id == deleteId && element.color == deleteColor)
       );
-      console.log(cart);
       // Mise à jour du localStorage
       localStorage.setItem("cart", JSON.stringify(cart));
       // Rechargement de la page Panier
-      location.reload();
       alert("Article supprimé du panier.");
+      await computePrice(cart);
+      await computeQuantity(cart);
     });
   });
 }
@@ -149,8 +158,6 @@ btnValidate.addEventListener("click", (event) => {
     city: document.querySelector("#city").value,
     email: document.querySelector("#email").value,
   };
-
-  console.log(contact);
 
   // Gestionnaire du formulaire 
 
@@ -293,7 +300,6 @@ btnValidate.addEventListener("click", (event) => {
       })
       .then((server) => {
         orderId = server.orderId;
-        console.log(orderId);
       });
 
     // Si l'orderID a bien été récupéré, on redirige l'utilisateur vers la page de Confirmation
@@ -307,7 +313,6 @@ btnValidate.addEventListener("click", (event) => {
 
 let dataFormulaire = JSON.parse(localStorage.getItem("contact"));
 
-console.log(dataFormulaire);
 if (dataFormulaire) {
   document.querySelector("#firstName").value = dataFormulaire.firstName;
   document.querySelector("#lastName").value = dataFormulaire.lastName;
@@ -315,5 +320,4 @@ if (dataFormulaire) {
   document.querySelector("#city").value = dataFormulaire.city;
   document.querySelector("#email").value = dataFormulaire.email;
 } else {
-  console.log("Le formulaire est vide");
 }

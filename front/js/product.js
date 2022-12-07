@@ -63,10 +63,6 @@ let registredProduct = (product) => {
       // Récupération des informations du produit sélectionné
       let displayProduct = {
         id: product._id,
-        name: product.name,
-        img: product.imageUrl,
-        altTxt: product.altTxt,
-        description: product.description,
         color: selectedColor.value,
         quantity: parseInt(selectedQuantity.value, 10),
       };
