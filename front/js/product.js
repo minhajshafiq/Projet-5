@@ -12,7 +12,7 @@ fetch(`http://localhost:3000/api/products/${productId}`)
   })
 
   .then((product) => {
-    selectedProduct(product);
+    displayProduct(product);
     registredProduct(product);
   })
   .catch((error) => {
@@ -29,7 +29,7 @@ const selectedQuantity = document.querySelector("#quantity");
 const button = document.querySelector("#addToCart");
 
 // Fonction qui récupère les données de la promesse .then(product) pour injecter les valeurs dans le fichier HTML
-let selectedProduct = (product) => {
+let displayProduct = (product) => {
   // Intégration des données du produit sélectionné dans la page HTML
   document.querySelector("head > title").textContent = product.name;
   document.querySelector(".item__img")
@@ -61,7 +61,7 @@ let registredProduct = (product) => {
       alert("Votre article a bien été ajouté au panier !");
 
       // Récupération des informations du produit sélectionné
-      let selectedProduct = {
+      let displayProduct = {
         id: product._id,
         name: product.name,
         img: product.imageUrl,
@@ -70,7 +70,6 @@ let registredProduct = (product) => {
         color: selectedColor.value,
         quantity: parseInt(selectedQuantity.value, 10),
       };
-      console.log(selectedProduct);
 
       // Gestion du localStorage
 
@@ -79,31 +78,27 @@ let registredProduct = (product) => {
 
       // Si le localStorage existe
       if (existingCart) {
-        console.log("Il y a déjà un produit dans le panier, on compare les données");
         // On recherche avec la méthode find() si l'ID et la couleur d'un article sont déjà présents
         let item = existingCart.find(
           (item) =>
-            item.id == selectedProduct.id && item.color == selectedProduct.color
+            item.id == displayProduct.id && item.color == displayProduct.color
         );
         // Si oui, on ajoute la nouvelle quantité et la mise à jour du prix total de l'article
         if (item) {
-          item.quantity = item.quantity + selectedProduct.quantity;
-          item.totalPrice += item.price * selectedProduct.quantity;
+          item.quantity = item.quantity + displayProduct.quantity;
+          item.totalPrice += item.price * displayProduct.quantity;
           localStorage.setItem("cart", JSON.stringify(existingCart));
-          console.log("Quantité supplémentaire dans le panier");
           return;
         }
         // Si non, alors on push le nouvel article sélectionné
-        existingCart.push(selectedProduct);
+        existingCart.push(displayProduct);
         localStorage.setItem("cart", JSON.stringify(existingCart));
-        console.log("Le produit a été ajouté au panier");
 
       } else {
-        // Sinon création d'un tableau dans le lequel on push l'objet "selectedProduct"
+        // Sinon création d'un tableau dans le lequel on push l'objet "displayProduct"
         let createLocalStorage = [];
-        createLocalStorage.push(selectedProduct);
+        createLocalStorage.push(displayProduct);
         localStorage.setItem("cart", JSON.stringify(createLocalStorage));
-        console.log("Le panier est vide, on ajoute le premier produit");
       }
     }
   });
