@@ -8,7 +8,9 @@
 
  const url = "http://localhost:3000/api/products";
 
- function ajax(url) {
+
+// Fonction pour afficher tout les produits dans la page d'acceuil
+ function displayProduct(url) {
    fetch(url)
      .then(function (res) {
        if (res.ok) {
@@ -16,7 +18,6 @@
        }
      })
      .then(function (articles) {
-       //   console.log(articles);
        for (let article of articles) {
          addItemAtHome(
            article._id,
@@ -28,10 +29,9 @@
        }
      })
      .catch(function (err) {
-       console.log(err);
      });
  }
- ajax(url);
+ displayProduct(url);
  
  /** Création d'un item/article pour chaque résultat de la requête ajax sur la page d'accueil 
    @param { String } idItem
