@@ -41,7 +41,7 @@ async function displayCart() {
                             </p>
                         </div>
                         <div class="cart__item__content__settings__delete">
-                          <p data-id= ${cart[i].id} data-color= ${cart[i].color} class="deleteItem">Supprimer</p>
+                          <p class="deleteItem">Supprimer</p>
                         </div>
                       </div>
                     </div>
@@ -51,24 +51,15 @@ async function displayCart() {
   // Affichage du nombre total d'articles dans le panier et de la somme totale
   await computePrice(cart);
   await computeQuantity(cart);
-
-  if (i == cart.length) {
-    const displayBasket = parser.parseFromString(cartArray, "text/html");
-    positionEmptyCart.appendChild(displayBasket.body);
-    changeQuantity();
-    deleteItem();
-  }
+  
+  // Afficher ce que contient le localStorage sous forme de code HTML
+  const displayBasket = parser.parseFromString(cartArray, "text/html");
+  positionEmptyCart.appendChild(displayBasket.body);
+  changeQuantity();
+  deleteItem();
 }
 
-async function computePrice (cart) {
-  let totalPrice = 0;
-    for (i = 0; i < cart.length; i++) {
-      const article = await getProductById(cart[i].id);
-      totalPrice += parseInt(article.price * cart[i].quantity);
-    }
-    document.getElementById("totalPrice").innerHTML = totalPrice;
-}
-
+// Affiche la quantité total pour ajuster le prix
 async function computeQuantity (cart) {
   let totalQuantity = 0; 
     for (i = 0; i < cart.length; i++) {
@@ -78,6 +69,15 @@ async function computeQuantity (cart) {
     document.getElementById("totalQuantity").innerHTML = totalQuantity;
 }
 
+// Affiche le prix total
+async function computePrice (cart) {
+  let totalPrice = 0;
+    for (i = 0; i < cart.length; i++) {
+      const article = await getProductById(cart[i].id);
+      totalPrice += parseInt(article.price * cart[i].quantity);
+    }
+    document.getElementById("totalPrice").innerHTML = totalPrice;
+}
 
 // Récupération des produits de l'API
 async function getProductById(productId) {
@@ -127,16 +127,18 @@ function deleteItem() {
   deleteButtons.forEach((deleteButton) => {
     deleteButton.addEventListener("click", async(event) => {
       event.preventDefault();
-      const deleteId = event.target.getAttribute("data-id");
-      const deleteColor = event.target.getAttribute("data-color");
+      const article = event.target.closest('article');
+      const deleteId = article.getAttribute("data-id");
+      const deleteColor = article.getAttribute("data-color");
       cart = cart.filter(
         (element) => !(element.id == deleteId && element.color == deleteColor)
       );
+      console.log(cart);
       // Mise à jour du localStorage
       localStorage.setItem("cart", JSON.stringify(cart));
       // Réactualisation de la page en supprimant l'élément désirer
-      const deletedItem = event.target.getAttribute("data-id");
-      deletedItem.remove(product);
+      article.remove();
+      console.log(article);
       alert("Article supprimé du panier.");
       await computePrice(cart);
       await computeQuantity(cart);    
