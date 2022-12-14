@@ -134,13 +134,16 @@ function deleteItem() {
       );
       // Mise à jour du localStorage
       localStorage.setItem("cart", JSON.stringify(cart));
-      // Rechargement de la page Panier
+      // Réactualisation de la page en supprimant l'élément désirer
+      const deletedItem = event.target.getAttribute("data-id");
+      deletedItem.remove(product);
       alert("Article supprimé du panier.");
       await computePrice(cart);
-      await computeQuantity(cart);
+      await computeQuantity(cart);    
     });
   });
 }
+
 
 // Le formulaire de coordonnées
 
