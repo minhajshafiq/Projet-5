@@ -1,11 +1,12 @@
-// Page Acceuil
+//** Page Acceuil **/
  
 /**
- * Récupérer tous les articles du site pour pouvoir les afficher par la suite
- * @param { String } url
- * @return { Promise }
+ Récupérer tous les articles du site pour pouvoir les afficher 
+ @param { String } url
+ @return { Promise }
  **/
 
+ // Récupérer le localhost pour pouvoir modifier l'URL par la suite 
  const url = "http://localhost:3000/api/products";
 
 
@@ -40,31 +41,33 @@
    @param { String } name
    @param { String } description
   **/
+
+   // Fonction pour créer les éléments HTML du produit 
  function addItemAtHome(idItem, imageUrl, imageAlt, name, description) {
    var items = document.getElementById("items");
  
-   //   Création du lien de l'article
+   // Création du lien de l'article
    let linkItem = document.createElement("a");
    linkItem.href = "./product.html?id=" + idItem;
    items.append(linkItem);
  
-   //   Création de l'article
+   // Création de l'article
    let articleItem = document.createElement("article");
    linkItem.append(articleItem);
  
-   //   Création de l'image de l'article
+   // Création de l'image de l'article
    let pictureItem = document.createElement("img");
    pictureItem.src = imageUrl;
    pictureItem.alt = imageAlt;
    articleItem.append(pictureItem);
  
-   //   Création du titre de l'article
+   // Création du titre de l'article
    let titleItem = document.createElement("h3");
    titleItem.textContent = name;
    titleItem.classList.add("productName");
    articleItem.append(titleItem);
  
-   //   Création de la description de l'article
+   // Création de la description de l'article
    let descriptionItem = document.createElement("p");
    descriptionItem.textContent = description;
    descriptionItem.classList.add("productDescription");

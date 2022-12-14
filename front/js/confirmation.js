@@ -1,4 +1,4 @@
-// Page Confirmation 
+//** Page Confirmation **/
 
 // Récuperation de l'ID du produit
 const getProductId = () => {
@@ -6,6 +6,7 @@ const getProductId = () => {
 };
 const orderId = getProductId();
 
+// Récupération des données du localStorage
 const cart = JSON.parse(localStorage.getItem("cart"));
 
 // Confirmation de l'ID de la commande 

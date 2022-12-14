@@ -1,6 +1,8 @@
-// Page Panier 
+//** Page Panier **/
 
-// Récupération du localStorage
+/** Affichage et actualisation du panier **/
+
+// Récupération des données du localStorage
 let cart = JSON.parse(localStorage.getItem("cart"));
 
 // Variable pour stocker les ID de chaque articles présent dans le panier
@@ -48,15 +50,16 @@ async function displayCart() {
                   </div>
                   </article>`;
   }
+
   // Affichage du nombre total d'articles dans le panier et de la somme totale
   await computePrice(cart);
   await computeQuantity(cart);
   
-  // Afficher ce que contient le localStorage sous forme de code HTML
+  // Affiche ce que contient le localStorage sous forme de code HTML
   const displayBasket = parser.parseFromString(cartArray, "text/html");
   positionEmptyCart.appendChild(displayBasket.body);
   changeQuantity();
-  deleteItem();
+  deleteaddEventItem();
 }
 
 // Affiche la quantité total pour ajuster le prix
@@ -93,10 +96,11 @@ async function getProductById(productId) {
 }
 displayCart();
 
-// Modification de la quantité de produit dans le panier
+// Fonction pour modifier la quantité de produit dans le panier
 function changeQuantity() {
   const quantityInputs = document.querySelectorAll(".itemQuantity");
   quantityInputs.forEach((quantityInput) => {
+    // Initiation de la fonction si l'utilisateur change la quantité 
     quantityInput.addEventListener("change", async(event) => {
       event.preventDefault();
       const inputValue = event.target.value;
@@ -114,17 +118,18 @@ function changeQuantity() {
       // Mise à jour du localStorage
       let itemsStr = JSON.stringify(items);
       localStorage.setItem("cart", itemsStr);
-      // Rechargement du prix et de la quantité de produit 
+      // Réactualisation de la page pour afficher le nouveau prix et la quantité de produit 
       await computePrice(items);
       await computeQuantity(items);
     });
   });
 }
 
-// Suppression d'un article
-function deleteItem() {
+// Fonction pour supprimer un produit dans le panier
+function deleteaddEventItem() {
   const deleteButtons = document.querySelectorAll(".deleteItem");
   deleteButtons.forEach((deleteButton) => {
+    // Initialisation de la fonction si l'utilisateur click sur le bouton 'Supprimer'
     deleteButton.addEventListener("click", async(event) => {
       event.preventDefault();
       const article = event.target.closest('article');
@@ -133,12 +138,10 @@ function deleteItem() {
       cart = cart.filter(
         (element) => !(element.id == deleteId && element.color == deleteColor)
       );
-      console.log(cart);
       // Mise à jour du localStorage
       localStorage.setItem("cart", JSON.stringify(cart));
-      // Réactualisation de la page en supprimant l'élément désirer
+      // Réactualisation de la page en supprimant le produit 
       article.remove();
-      console.log(article);
       alert("Article supprimé du panier.");
       await computePrice(cart);
       await computeQuantity(cart);    
@@ -147,12 +150,12 @@ function deleteItem() {
 }
 
 
-// Le formulaire de coordonnées
+//** Le formulaire de coordonnées **/
 
 // Sélection du bouton Valider
 const btnValidate = document.querySelector("#order");
 
-// Vérification du bouton Valider sur le click pour pouvoir valider le formulaire
+// Initiation de la fonction si l'utilisateur click sur le bouton
 btnValidate.addEventListener("click", (event) => {
   event.preventDefault();
 
@@ -164,7 +167,7 @@ btnValidate.addEventListener("click", (event) => {
     email: document.querySelector("#email").value,
   };
 
-  // Gestionnaire du formulaire 
+  //** Gestionnaire du formulaire **/
 
   // Contrôle des champs "Nom", "Prénom" et "Ville"
   const regExPrenomNomVille = (value) => {
@@ -183,7 +186,7 @@ btnValidate.addEventListener("click", (event) => {
     );
   };
 
-  // Vérification du champ "Prénom" :
+  // Fonction pour vérifier le champ "Prénom" 
   function firstNameControl() {
     const prenom = contact.firstName;
     let inputFirstName = document.querySelector("#firstName");
@@ -201,7 +204,7 @@ btnValidate.addEventListener("click", (event) => {
     }
   }
 
-  // Vérification du champ "Nom" :
+  // Fonction pour vérifier le champ "Nom" 
   function lastNameControl() {
     const nom = contact.lastName;
     let inputLastName = document.querySelector("#lastName");
@@ -219,7 +222,7 @@ btnValidate.addEventListener("click", (event) => {
     }
   }
 
-  // Vérification du champ "Adresse" :
+  // Fonction pour vérifier le champ "Adresse" 
   function addressControl() {
     const adresse = contact.address;
     let inputAddress = document.querySelector("#address");
@@ -237,7 +240,7 @@ btnValidate.addEventListener("click", (event) => {
     }
   }
 
-  // Vérification du champ "Ville" :
+  // Fonction pour vérifier le champ "Ville" 
   function cityControl() {
     const ville = contact.city;
     let inputCity = document.querySelector("#city");
@@ -255,7 +258,7 @@ btnValidate.addEventListener("click", (event) => {
     }
   }
 
-  // Vérification du champ "Email" :
+  // Fonction pour vérifier le champ "Email" 
   function mailControl() {
     const courriel = contact.email;
     let inputMail = document.querySelector("#email");
@@ -284,13 +287,14 @@ btnValidate.addEventListener("click", (event) => {
     // Enregistrement du formulaire dans le local storage
     localStorage.setItem("contact", JSON.stringify(contact));
 
+    // Changement du bouton "Valider la commande" en "Confirmez la commande"
     document.querySelector("#order").value = "Confirmez votre commande !";
     sendToServer();
   } else {
     error("Veuillez bien remplir le formulaire !");
   }
 
-  // Requête du server et POST des donnés
+  // Requête du serveur et POST des donnés
   function sendToServer() {
     const sendToServer = fetch("http://localhost:3000/api/products/order", {
       method: "POST",

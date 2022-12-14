@@ -1,4 +1,4 @@
-// Page Produit 
+//** Page Produit **/
 
 // Récupération de l'ID du produit pour changer l'URL
 const getProductId = () => {
@@ -18,6 +18,8 @@ fetch(`http://localhost:3000/api/products/${productId}`)
   .catch((error) => {
     alert(error);
   });
+
+  /** Affichage des détails du produit  **/
 
 // Sélection de l'ID colors
 const selectedColor = document.querySelector("#colors");
@@ -47,9 +49,9 @@ let displayProduct = (product) => {
   }
 };
 
-// Fonction qui enregistre dans un objet les options de l'utilisateur au click sur le bouton ajouter au panier
+// Fonction qui enregistre dans un objet les options choisis par l'utilisateur au click sur le bouton ajouter au panier
 let registredProduct = (product) => {
-  // Vérification du click sur le bouton ajouter
+  // Initiation de la fonction si l'utilisateur click qui sur bouton
   button.addEventListener("click", (event) => {
     event.preventDefault();
 
@@ -67,7 +69,7 @@ let registredProduct = (product) => {
         quantity: parseInt(selectedQuantity.value, 10),
       };
 
-      // Gestion du localStorage
+      //** Gestion du localStorage **/
 
       // Récupération des données du localStorage
       let existingCart = JSON.parse(localStorage.getItem("cart"));
@@ -91,7 +93,7 @@ let registredProduct = (product) => {
         localStorage.setItem("cart", JSON.stringify(existingCart));
 
       } else {
-        // Sinon création d'un tableau dans le lequel on push l'objet "displayProduct"
+        // Sinon création d'un tableau dans le lequel on push l'objet "displayProduct" pour crée le localStorage
         let createLocalStorage = [];
         createLocalStorage.push(displayProduct);
         localStorage.setItem("cart", JSON.stringify(createLocalStorage));
