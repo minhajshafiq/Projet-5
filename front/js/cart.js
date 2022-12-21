@@ -53,7 +53,7 @@ async function displayCart() {
 
   // Affichage du nombre total d'articles dans le panier et de la somme totale
   await computePrice(cart);
-  await computeQuantity(cart);
+  computeQuantity(cart);
   
   // Affiche ce que contient le localStorage sous forme de code HTML
   const displayBasket = parser.parseFromString(cartArray, "text/html");
@@ -63,10 +63,9 @@ async function displayCart() {
 }
 
 // Affiche la quantité total pour ajuster le prix
-async function computeQuantity (cart) {
+function computeQuantity (cart) {
   let totalQuantity = 0; 
     for (i = 0; i < cart.length; i++) {
-      const article = await getProductById(cart[i].id);
       totalQuantity += parseInt(cart[i].quantity);
     }
     document.getElementById("totalQuantity").innerHTML = totalQuantity;
@@ -120,7 +119,7 @@ function changeQuantity() {
       localStorage.setItem("cart", itemsStr);
       // Réactualisation de la page pour afficher le nouveau prix et la quantité de produit 
       await computePrice(items);
-      await computeQuantity(items);
+      computeQuantity(items);
     });
   });
 }
@@ -144,7 +143,7 @@ function deleteaddEventItem() {
       article.remove();
       alert("Article supprimé du panier.");
       await computePrice(cart);
-      await computeQuantity(cart);    
+      computeQuantity(cart);    
     });
   });
 }
